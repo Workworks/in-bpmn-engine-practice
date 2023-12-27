@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<!--    注意：-->
+<!--    1、processEngineConfiguration这个名字最好不要修改。这是 activiti读取的默认Bean名字。-->
+<!--    2、在processEngineConfiguration中也可以直接配置jdbcDriver、 jdbcUrl、jdbcUsername、jdbcPassword几个属性。-->
+<!--    3、关于databaseSchemaUpdate这个属性，稍微跟踪一下源码就能看 到他的配置方式：-->
+<!--        默认是false；表示不创建数据库，只是检查数据库中的表结构，不满足 就会抛出异常-->
+<!--        create-drop：表示在引擎启动时创建表结构，引擎处理结束时删除表结构。-->
+<!--        true：表示创建完整表机构，并在必要时更新表结构。-->
+    <!-- 这里可以使用 链接池 dbcp-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"
+        />
+        <property name="url" value="jdbc:mysql://localhost:3307/activiti?serverTimezone=GMT%2B8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="mysql"/>
+        <property name="maxActive" value="3"/>
+        <property name="maxIdle" value="1"/>
+    </bean>
+    <bean id="processEngineConfiguration"
+          class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+        <!-- 引用数据源 上面已经设置好了-->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- activiti数据库表处理策略 -->
+        <property name="databaseSchemaUpdate" value="true"/>
+    </bean>
+
+</beans>
