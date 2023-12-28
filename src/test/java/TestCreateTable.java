@@ -5,6 +5,16 @@ import org.junit.Test;
 
 public class TestCreateTable {
 
+    /**
+     * homework:
+     *  1. 熟悉相对应类
+     *      - RuntimeService
+     *      - TaskService
+     *      - HistoryService
+     *      - ManagementService
+     *      - ProcessEngine
+     *  2. 熟悉相对应表
+     */
     @Test
     public void testCreateDbTable() {
         //默认创建方式
