@@ -1,4 +1,6 @@
 import org.activiti.engine.*;
+import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.history.HistoricActivityInstanceQuery;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -129,5 +131,35 @@ public class ActivitiUseDemo {
 //        repositoryService.deleteDeployment(deploymentId);
         //设置true 级联删除流程定义，即使该流程有流程实例启动也可以删除，设置为false非级连删除方式（项目开发中，级联删除操作一般只开放给管理员使用）
         repositoryService.deleteDeployment(deploymentId, true);
+    }
+
+    /**
+     * 查看历史信息
+     */
+    @Test
+    public void findHistoryInfo(){
+        // 获取引擎
+        ProcessEngine processEngine =
+                ProcessEngines.getDefaultProcessEngine();
+        // 获取HistoryService
+        HistoryService historyService = processEngine.getHistoryService();
+        // 获取 actinst表的查询对象
+        HistoricActivityInstanceQuery instanceQuery = historyService.createHistoricActivityInstanceQuery();
+        // 查询 actinst表，条件：根据 InstanceId 查询，查询一个流程的所有历史信息
+        instanceQuery.processInstanceId("25001");
+        // 查询 actinst表，条件：根据 DefinitionId 查询，查询一种流程的所有历史信息
+        // instanceQuery.processDefinitionId("myLeave:1:22504");
+        // 增加排序操作,orderByHistoricActivityInstanceStartTime 根据开始时间排序asc 升序
+        instanceQuery.orderByHistoricActivityInstanceStartTime().asc();
+        // 查询所有内容
+        List<HistoricActivityInstance> activityInstanceList = instanceQuery.list();
+        // 输出
+        for (HistoricActivityInstance hi : activityInstanceList) {
+            System.out.println(hi.getActivityId());
+            System.out.println(hi.getActivityName());
+            System.out.println(hi.getProcessDefinitionId());
+            System.out.println(hi.getProcessInstanceId());
+            System.out.println("<==========================>");
+        }
     }
 }
