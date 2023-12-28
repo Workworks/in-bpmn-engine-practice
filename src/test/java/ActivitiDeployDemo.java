@@ -7,9 +7,13 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.util.zip.ZipInputStream;
 
-public class ActivitiDemo {
+public class ActivitiDeployDemo {
     /**
      * 部署流程定义 文件上传方式
+     * 表变更：
+     *      1. act_re_deployment 流程定义部署表
+     *      2. act_re_procdef 流程定义表
+     *      3. act_ge_bytearray 流程资源表
      */
     @Test
     public void testDeployment() {
